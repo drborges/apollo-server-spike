@@ -61,7 +61,7 @@ const resolvers = {
     userAdded: {
       subscribe: () => {
         console.log(">>>> subscribing to user added event");
-        pubsub.asyncIterator([USER_ADDED]);
+        return pubsub.asyncIterator([USER_ADDED]);
       }
     }
   }
