@@ -38,12 +38,13 @@ const db = {
 const resolvers = {
   Query: {
     users: () => {
-      console.log(">>>> resolving users", db.users);
+      console.log(">>>> resolving users");
       return db.users;
     }
   },
   Mutation: {
     addUser: (parent, { name, email, age }, context) => {
+      console.log(">>>> adding user");
       const user = {
         id: nextId(),
         name,
@@ -58,7 +59,10 @@ const resolvers = {
   },
   Subscription: {
     userAdded: {
-      subscribe: () => pubsub.asyncIterator([USER_ADDED])
+      subscribe: () => {
+        console.log(">>>> subscribing to user added event");
+        pubsub.asyncIterator([USER_ADDED]);
+      }
     }
   }
 };
@@ -70,7 +74,7 @@ const server = new ApolloServer({
     onConnect: (connectionParams, webSocket) => {
       // returns a fake/empty context
       // ideally there would be some auth token verification here.
-      console.log(">>> subscription created for", connectionParams);
+      console.log(">>> subscription created for new user");
       return {};
     }
   }
